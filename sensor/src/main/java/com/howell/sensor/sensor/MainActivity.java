@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -19,26 +19,26 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 
   private SensorManager sensorManager;
   private boolean color = false;
-  private View view;
+  private TextView textView;
   private long lastUpdate;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    view = findViewById(R.id.textView1);
+    textView = (TextView) findViewById(R.id.textView1);
 
     sensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);
     List<Sensor> list = sensorManager.getSensorList(Sensor.TYPE_ALL);
 
     StringBuilder data = new StringBuilder();
     for (Sensor sensor : list) {
-      data.append(sensor.getName() + "\n");
-      data.append(sensor.getVendor() + "\n");
-      data.append(sensor.getVersion() + "\n");
+      data.append(sensor.getName()).append("\n");
+      data.append(sensor.getVendor()).append("\n");
+      data.append(sensor.getVersion()).append("\n");
 
     }
-//    view.setText(data);
+    textView.setText(data);
     lastUpdate = System.currentTimeMillis();
   }
 
@@ -99,9 +99,9 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
       Toast.makeText(this, "Device was shuffed", Toast.LENGTH_SHORT)
               .show();
       if (color) {
-        view.setBackgroundColor(Color.GREEN);
+        textView.setBackgroundColor(Color.GREEN);
       } else {
-        view.setBackgroundColor(Color.RED);
+        textView.setBackgroundColor(Color.RED);
       }
       color = !color;
     }
@@ -111,9 +111,6 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
    * Called when the accuracy of the registered sensor has changed.
    * <p/>
    * <p>See the SENSOR_STATUS_* constants in {@link android.hardware.SensorManager SensorManager} for details.
-   *
-   * @param sensor
-   * @param accuracy The new accuracy of this sensor, one of {@code SensorManager.SENSOR_STATUS_*}
    */
   @Override
   public void onAccuracyChanged(Sensor sensor, int accuracy) {

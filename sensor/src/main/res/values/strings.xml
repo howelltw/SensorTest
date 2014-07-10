@@ -4,5 +4,6 @@
     <string name="app_name">Sensor</string>
     <string name="hello_world">Simple app to learn about Android sensors</string>
     <string name="action_settings">Settings</string>
+  <string name="main_text_msg">This text should change color when you shake the device.</string>
 
 </resources>

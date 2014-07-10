@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Sensor</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Simple app to learn about Android sensors</string>
     <string name="action_settings">Settings</string>
 
 </resources>

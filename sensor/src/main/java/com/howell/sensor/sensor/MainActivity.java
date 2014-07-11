@@ -17,6 +17,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements SensorEventListener {
 
+  private static final float SHAKE_THRESHOLD = 2.0f;
   private SensorManager sensorManager;
   private boolean color = false;
   private TextView textView;
@@ -81,29 +82,33 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
   }
 
   private void getAccelerometer(SensorEvent event) {
-    float[] values = event.values;
     // Movement
-    float x = values[0];
-    float y = values[1];
-    float z = values[2];
+    float x = event.values[0];
+    float y = event.values[1];
+    float z = event.values[2];
 
-    float accelationSquareRoot = (x * x + y * y + z * z)
-            / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-    long actualTime = event.timestamp;
-    if (accelationSquareRoot >= 2) //
-    {
-      if (actualTime - lastUpdate < 200) {
-        return;
+    long curTime = System.currentTimeMillis();
+
+    if ((curTime - lastUpdate) > 800) {
+      lastUpdate = curTime;
+
+      float accelationSquareRoot = (x * x + y * y + z * z)
+              / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+
+      if (accelationSquareRoot >= SHAKE_THRESHOLD) {
+
+        Toast.makeText(this, "Device was shuffed", Toast.LENGTH_SHORT)
+                .show();
+        if (color) {
+          textView.setBackgroundColor(Color.GREEN);
+        } else {
+          textView.setBackgroundColor(Color.RED);
+        }
+        color = !color;
       }
-      lastUpdate = actualTime;
-      Toast.makeText(this, "Device was shuffed", Toast.LENGTH_SHORT)
-              .show();
-      if (color) {
-        textView.setBackgroundColor(Color.GREEN);
-      } else {
-        textView.setBackgroundColor(Color.RED);
+      else {
+        textView.setText(String.format("x = %f\ny = %f\nz = %f\naccelationSquareRoot = %f", x, y, z, accelationSquareRoot));
       }
-      color = !color;
     }
   }
 
